@@ -1,14 +1,5 @@
 import styled from "styled-components"
 
-interface CartUserProps {
-    name: string,
-    avatar_url: string , 
-    login: string,
-    bio: string ,
-    url: string 
-}
-
-
 const CardContainer = styled.div`
   display: flex;
   width: 100%;
@@ -76,6 +67,15 @@ const CardContainer = styled.div`
     }
   }
 `;
+
+
+interface CartUserProps {
+  name: string,
+  avatar_url: string , 
+  login: string,
+  bio: string ,
+  url: string 
+}
 
 export default function CardUser({
   name,
