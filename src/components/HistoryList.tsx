@@ -30,6 +30,7 @@ export default function HistoryList() {
                 historyc.map((item: HistoryState, index) =>
                     <HistoryItem
                         key={index}
+                        id={item.id}
                         value={item.search}
                         time={item.timestamp}
                     />)
