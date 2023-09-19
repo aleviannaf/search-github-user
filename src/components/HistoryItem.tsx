@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
-import { useStoreDispatch } from "../hooks/hooks"
+import { useStoreDispatch, useStoreSelector } from "../hooks/hooks"
 import { searchAdded } from "../store/modules/search/searchSlice"
+import { HistoryState } from "../store/modules/history/historySlice"
+import { useLocalHistoric } from "../hooks/useHistoric"
 
 const CardItem = styled.li`
     display: grid;
@@ -63,23 +65,34 @@ const Button = styled.button`
 `
 
 interface HistoryItemProps {
+    id: string
     value: string
     time: string
 }
-export default function HistoryItem({value, time}: HistoryItemProps){
+export default function HistoryItem({id, value, time}: HistoryItemProps){
+    const dataHistoric: HistoryState[] = useStoreSelector((state)=> state.history)
+    const { updateLocalHistoric, setLocalHistoric } = useLocalHistoric()
     const dispatch = useStoreDispatch()
     const navigate = useNavigate()
 
     const handleClickRecover = () =>{
         dispatch(searchAdded(value))
+        updateLocalHistoric(value)
         navigate("/")
+    }
+
+    const handleClickDelete = (id: string) => {
+        const newValue = dataHistoric.filter(item => {
+            if (item.id !== id) return item
+        })
+        setLocalHistoric(newValue)
     }
     return(
         <CardItem>
             <span>{value}</span>
             <span>{time}</span>
             <Button onClick={handleClickRecover} >Recuperar</Button>
-            <Button isdelete="true">Excluir</Button>
+            <Button onClick={()=>handleClickDelete(id)} isdelete="true">Excluir</Button>
         </CardItem>
     )
 }
