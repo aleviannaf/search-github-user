@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { historyAdded,  } from "../store/modules/history/historySlice";
+import { HistoryState, historyAdded, setHistoric,  } from "../store/modules/history/historySlice";
 import { useStoreDispatch, useStoreSelector } from "./hooks";
 
 export function useLocalHistoric(){
@@ -7,7 +7,7 @@ export function useLocalHistoric(){
     const historic = useStoreSelector((state)=>state.history)
 
     useEffect(() => {
-        if ((historic.length > 0) && window.localStorage) {
+        if ((historic.length > 0 ) && window.localStorage) {
             localStorage.setItem('historic-search', JSON.stringify(historic));
         }
     }, [dispatch, historic]);
@@ -16,5 +16,13 @@ export function useLocalHistoric(){
         dispatch(historyAdded(newValue));
     }
 
-    return updateLocalHistoric
+    const setLocalHistoric = (newValue: HistoryState[]): void =>{
+        dispatch(setHistoric(newValue))
+        localStorage.setItem('historic-search', JSON.stringify(newValue))
+    }
+
+    return {
+        updateLocalHistoric,
+        setLocalHistoric
+    }
 }
