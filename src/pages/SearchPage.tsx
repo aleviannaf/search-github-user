@@ -7,13 +7,14 @@ import { useStoreDispatch, useStoreSelector } from '../hooks/hooks';
 import SearchPanel from '../components/SearchPanel';
 import RepositoryList from '../components/RepositoriyList';
 
-import HistoricIcon from '../components/icons/HistoricIcon';
+
 
 import { useLocalHistoric } from '../hooks/useHistoric';
 import { useGitHubUserData } from '../hooks/useGitHubUserData';
 import Loading from '../components/Loading';
 import CardUser from '../components/CardUser';
 import NotFound from '../components/NotFound';
+import HistoricButton from '../components/HistoricButton';
 
 
 
@@ -45,7 +46,7 @@ const Wrap = styled.div`
 export default function SearchPage() {
     const dispach = useStoreDispatch()
     const user: string = useStoreSelector((state) => state.search.value)
-    const updateLocalHistoric = useLocalHistoric()
+    const { updateLocalHistoric } = useLocalHistoric()
     const [search, setSearch] = useState<string>('')
     const { data, isLoading, isError } = useGitHubUserData(user);
 
@@ -61,7 +62,7 @@ export default function SearchPage() {
 
     return (
         <Container>
-            <HistoricIcon />
+            <HistoricButton />
             <SearchPanel
                 value={search}
                 handleChange={setSearch}
